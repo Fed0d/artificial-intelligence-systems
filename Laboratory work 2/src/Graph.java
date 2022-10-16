@@ -111,7 +111,7 @@ public class Graph {
         }
     }
 
-    public void dfs(int start, int end, int depth) {
+    public Boolean dfs(int start, int end, int depth) {
         Stack<Integer> stack = new Stack<>();
         vertexList[start].setVisited(true);
         stack.push(start);
@@ -130,12 +130,22 @@ public class Graph {
             }
         }
         display_dfs(stack);
+        if (stack.size() != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void iterative_dfs(int start, int end) {
+        for (int i = 1; i < nVerts; i++) {
+            if (dfs(start, end, i) == true) {
+                break;
+            }
+        }
     }
 
     private void display_dfs(Stack<Integer> stack) {
-        if (stack.size() == 0) {
-            System.out.print("Невозможно найти маршрут.");
-        }
         for (int id : stack) {
             displayVertex(id);
 

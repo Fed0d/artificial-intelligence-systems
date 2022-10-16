@@ -61,6 +61,11 @@ public class Main {
         System.out.println();
         graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
         System.out.println();
-        graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"), 8);
+        if (!graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"), 8)) {
+            System.out.print("Невозможно найти маршрут. ");
+        }
+        System.out.println();
+        graph.iterative_dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
+        System.out.println();
     }
 }

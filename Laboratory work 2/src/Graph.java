@@ -4,7 +4,6 @@ public class Graph {
     private final Vertex[] vertexList;
     private final int[][] adjMat;
     private int nVerts;
-    private final Stack<Integer> stack;
     private final Queue<Integer> queue;
 
     public Graph() {
@@ -17,7 +16,6 @@ public class Graph {
                 adjMat[i][j] = 0;
             }
         }
-        stack = new Stack<>();
         queue = new LinkedList<>();
     }
 
@@ -53,6 +51,7 @@ public class Graph {
     }
 
     public void dfs(int start, int end) {
+        Stack<Integer> stack = new Stack<>();
         vertexList[start].setVisited(true);
         stack.push(start);
         int vertex;
@@ -69,16 +68,7 @@ public class Graph {
                 }
             }
         }
-        for (int id : stack) {
-            displayVertex(id);
-            if (id != stack.peek()) {
-                System.out.print(" -> ");
-            }
-        }
-
-        for (int i = 0; i < nVerts; i++) {
-            vertexList[i].setVisited(false);
-        }
+        display_dfs(stack);
     }
 
     public void bfs(int start, int end) {
@@ -112,6 +102,44 @@ public class Graph {
         for (int i = route.size() - 1; i >= 0; i--) {
             displayVertex(route.get(i));
             if (i != 0) {
+                System.out.print(" -> ");
+            }
+        }
+
+        for (int i = 0; i < nVerts; i++) {
+            vertexList[i].setVisited(false);
+        }
+    }
+
+    public void dfs(int start, int end, int depth) {
+        Stack<Integer> stack = new Stack<>();
+        vertexList[start].setVisited(true);
+        stack.push(start);
+        int vertex;
+
+        while (!stack.isEmpty()) {
+            vertex = getAdjUnvisitedVertex(stack.peek());
+            if (vertex == -1 || stack.size() - 1 == depth) {
+                stack.pop();
+            } else {
+                vertexList[vertex].setVisited(true);
+                stack.push(vertex);
+                if (vertex == end) {
+                    break;
+                }
+            }
+        }
+        display_dfs(stack);
+    }
+
+    private void display_dfs(Stack<Integer> stack) {
+        if (stack.size() == 0) {
+            System.out.print("Невозможно найти маршрут.");
+        }
+        for (int id : stack) {
+            displayVertex(id);
+
+            if (id != stack.peek()) {
                 System.out.print(" -> ");
             }
         }

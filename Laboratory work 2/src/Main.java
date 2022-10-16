@@ -60,5 +60,7 @@ public class Main {
         graph.bfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
         System.out.println();
         graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
+        System.out.println();
+        graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"), 8);
     }
 }

@@ -4,7 +4,6 @@ public class Graph {
     private final Vertex[] vertexList;
     private final int[][] adjMat;
     private int nVerts;
-    private final Queue<Integer> queue;
 
     public Graph() {
         int MAX_VERTS = 28;
@@ -16,7 +15,6 @@ public class Graph {
                 adjMat[i][j] = 0;
             }
         }
-        queue = new LinkedList<>();
     }
 
     private int getAdjUnvisitedVertex(int vertex) {
@@ -72,6 +70,7 @@ public class Graph {
     }
 
     public void bfs(int start, int end) {
+        Queue<Integer> queue = new LinkedList<>();
         int vertex_2 = -1, vertex = -1;
         Map<Integer, Integer> parents = new HashMap();
         vertexList[start].setVisited(true);
@@ -139,7 +138,7 @@ public class Graph {
 
     public void iterative_dfs(int start, int end) {
         for (int i = 1; i < nVerts; i++) {
-            if (dfs(start, end, i) == true) {
+            if (dfs(start, end, i)) {
                 break;
             }
         }
@@ -156,6 +155,86 @@ public class Graph {
 
         for (int i = 0; i < nVerts; i++) {
             vertexList[i].setVisited(false);
+        }
+    }
+
+    public void bidirectional_search(int start, int end) {
+        int vertex_2_start = -1, vertex_start = -1, vertex_2_end = -1, vertex_end = -1, intersection = -1;
+        Queue<Integer> queue_start = new LinkedList<>();
+        Queue<Integer> queue_end = new LinkedList<>();
+        Map<Integer, Integer> parents_start = new HashMap();
+        Map<Integer, Integer> parents_end = new HashMap();
+        Set<Integer> cities_start = new HashSet<>();
+        Set<Integer> cities_end = new HashSet<>();
+        vertexList[start].setVisited(true);
+        vertexList[end].setVisited(true);
+        queue_start.add(start);
+        queue_end.add(end);
+        cities_start.add(start);
+        cities_end.add(end);
+
+        while (!queue_start.isEmpty() && !queue_end.isEmpty()) {
+            if(cities_start.contains(vertex_2_end) || cities_end.contains(vertex_2_start)) {
+                break;
+            }
+            vertex_start = queue_start.remove();
+            vertex_end = queue_end.remove();
+
+            while ((vertex_2_start = getAdjUnvisitedVertex(vertex_start)) != -1 &&
+                    (vertex_2_end = getAdjUnvisitedVertex(vertex_end)) != -1) {
+                vertexList[vertex_2_start].setVisited(true);
+                parents_start.put(vertex_2_start, vertex_start);
+                cities_start.add(vertex_2_start);
+                queue_start.add(vertex_2_start);
+                vertexList[vertex_2_end].setVisited(true);
+                parents_end.put(vertex_2_end, vertex_end);
+                cities_end.add(vertex_2_end);
+                queue_end.add(vertex_2_end);
+
+                if (cities_start.contains(vertex_2_end)) {
+                    intersection = vertex_2_end;
+                    break;
+                }
+
+                if (cities_end.contains(vertex_2_start)) {
+                    intersection = vertex_2_start;
+                    break;
+                }
+            }
+        }
+
+        List<Integer> route = new ArrayList<>();
+        int purpose = intersection;
+        route.add(purpose);
+
+        while (purpose != start) {
+            route.add(parents_start.get(purpose));
+            purpose = parents_start.get(purpose);
+        }
+
+        for (int i = route.size() - 1; i >= 0; i--) {
+            displayVertex(route.get(i));
+            if (i != 0) {
+                System.out.print(" -> ");
+            }
+        }
+
+        int count = route.size();
+        purpose = parents_end.get(intersection);
+        route.add(purpose);
+
+        while (purpose != end) {
+            route.add(parents_end.get(purpose));
+            purpose = parents_end.get(purpose);
+        }
+
+        System.out.print(" -> ");
+
+        for (int i = count; i < route.size(); i++) {
+            displayVertex(route.get(i));
+            if (i != route.size() - 1) {
+                System.out.print(" -> ");
+            }
         }
     }
 }

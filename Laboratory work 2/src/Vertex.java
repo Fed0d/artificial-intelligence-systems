@@ -1,6 +1,7 @@
 public class Vertex {
     private String name;
     private boolean isVisited;
+    private int distance;
 
     public Vertex(final String name) {
         this.name = name;
@@ -9,6 +10,14 @@ public class Vertex {
 
     public String getName() {
         return this.name;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     public boolean isVisited() {

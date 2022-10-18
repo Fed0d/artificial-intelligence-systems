@@ -1,12 +1,12 @@
 import java.util.*;
 
 public class Graph {
-    private final Vertex[] vertexList;
+    public Vertex[] vertexList;
     private final int[][] adjMat;
     private int nVerts;
 
     public Graph() {
-        int MAX_VERTS = 28;
+        int MAX_VERTS = 27;
         vertexList = new Vertex[MAX_VERTS];
         adjMat = new int[MAX_VERTS][MAX_VERTS];
         nVerts = 0;
@@ -56,11 +56,13 @@ public class Graph {
 
         while (!stack.isEmpty()) {
             vertex = getAdjUnvisitedVertex(stack.peek());
+
             if (vertex == -1) {
                 stack.pop();
             } else {
                 vertexList[vertex].setVisited(true);
                 stack.push(vertex);
+
                 if (vertex == end) {
                     break;
                 }
@@ -82,9 +84,11 @@ public class Graph {
             while ((vertex_2 = getAdjUnvisitedVertex(vertex)) != -1) {
                 vertexList[vertex_2].setVisited(true);
                 parents.put(vertex_2, vertex);
+
                 if (vertex_2 == end) {
                     break;
                 }
+
                 queue.add(vertex_2);
             }
         }
@@ -100,6 +104,7 @@ public class Graph {
 
         for (int i = route.size() - 1; i >= 0; i--) {
             displayVertex(route.get(i));
+
             if (i != 0) {
                 System.out.print(" -> ");
             }
@@ -118,6 +123,7 @@ public class Graph {
 
         while (!stack.isEmpty()) {
             vertex = getAdjUnvisitedVertex(stack.peek());
+
             if (vertex == -1 || stack.size() - 1 == depth) {
                 stack.pop();
             } else {
@@ -128,7 +134,9 @@ public class Graph {
                 }
             }
         }
+
         display_dfs(stack);
+
         if (stack.size() != 0) {
             return true;
         } else {
@@ -174,9 +182,10 @@ public class Graph {
         cities_end.add(end);
 
         while (!queue_start.isEmpty() && !queue_end.isEmpty()) {
-            if(cities_start.contains(vertex_2_end) || cities_end.contains(vertex_2_start)) {
+            if (cities_start.contains(vertex_2_end) || cities_end.contains(vertex_2_start)) {
                 break;
             }
+
             vertex_start = queue_start.remove();
             vertex_end = queue_end.remove();
 
@@ -214,6 +223,7 @@ public class Graph {
 
         for (int i = route.size() - 1; i >= 0; i--) {
             displayVertex(route.get(i));
+
             if (i != 0) {
                 System.out.print(" -> ");
             }
@@ -232,9 +242,46 @@ public class Graph {
 
         for (int i = count; i < route.size(); i++) {
             displayVertex(route.get(i));
+
             if (i != route.size() - 1) {
                 System.out.print(" -> ");
             }
         }
+    }
+
+    public void greedy_search(int start, int end) {
+        int distance = 0;
+        Stack<Integer> stack = new Stack<>();
+        vertexList[start].setVisited(true);
+        stack.push(start);
+
+        while (!stack.isEmpty()) {
+            int min = 10000;
+            int vertex = -1;
+
+            for (int i = 0; i < nVerts; i++) {
+                if(adjMat[stack.peek()][i] > 0) {
+                    if(vertexList[i].getDistance() < min) {
+                        min = vertexList[i].getDistance();
+                        vertex = i;
+                    }
+                }
+            }
+
+            if (vertex != -1) {
+                stack.push(vertex);
+                distance += vertexList[vertex].getDistance();
+            } else {
+                distance -= vertexList[stack.peek()].getDistance();
+                stack.pop();
+            }
+
+            if(vertex == end) {
+                break;
+            }
+        }
+
+        display_dfs(stack);
+        System.out.print(" | Расстояние по трассе: " + distance + " км");
     }
 }

@@ -243,6 +243,10 @@ public class Graph {
                 System.out.print(" -> ");
             }
         }
+
+        for (int i = 0; i < nVerts; i++) {
+            vertexList[i].setVisited(false);
+        }
     }
 
     public void greedy_search(int start, int end) {
@@ -266,6 +270,7 @@ public class Graph {
 
             if (vertex != -1) {
                 stack.push(vertex);
+                vertexList[vertex].setVisited(true);
                 distance += vertexList[vertex].getDistance();
             } else {
                 distance -= vertexList[stack.peek()].getDistance();
@@ -279,5 +284,9 @@ public class Graph {
 
         display_dfs(stack);
         System.out.print(" | Расстояние по трассе: " + distance + " км");
+
+        for (int i = 0; i < nVerts; i++) {
+            vertexList[i].setVisited(false);
+        }
     }
 }

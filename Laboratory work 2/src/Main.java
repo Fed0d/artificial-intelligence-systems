@@ -112,5 +112,7 @@ public class Main {
         graph.bidirectional_search(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
         System.out.println();
         graph.greedy_search(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
+        System.out.println();
+        graph.a_asterisk(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
     }
 }

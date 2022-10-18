@@ -289,4 +289,49 @@ public class Graph {
             vertexList[i].setVisited(false);
         }
     }
+
+    public void a_asterisk(int start, int end) {
+        int distance = 0;
+        Stack<Integer> stack = new Stack<>();
+        vertexList[start].setVisited(true);
+        stack.push(start);
+
+        while (!stack.isEmpty()) {
+            int min = 100000;
+            int vertex = -1;
+
+            for (int i = 0; i < nVerts; i++) {
+                if(adjMat[stack.peek()][i] > 0) {
+                    int value = vertexList[stack.peek()].asterisk + adjMat[stack.peek()][i];
+                    if(vertexList[i].asterisk == 0 || vertexList[i].asterisk > value) {
+                        vertexList[i].asterisk = value;
+                    }
+                    if(vertexList[i].asterisk == value && vertexList[i].asterisk + vertexList[i].getDistance() < min) {
+                        vertex = i;
+                        min = vertexList[i].asterisk + vertexList[i].getDistance();
+                    }
+                }
+            }
+
+            if (vertex != -1) {
+                stack.push(vertex);
+                vertexList[vertex].setVisited(true);
+                distance += vertexList[vertex].getDistance();
+            } else {
+                distance -= vertexList[stack.peek()].getDistance();
+                stack.pop();
+            }
+
+            if(vertex == end) {
+                break;
+            }
+        }
+
+        display_dfs(stack);
+        System.out.print(" | Расстояние по трассе: " + distance + " км");
+
+        for (int i = 0; i < nVerts; i++) {
+            vertexList[i].setVisited(false);
+        }
+    }
 }

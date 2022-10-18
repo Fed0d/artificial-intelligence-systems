@@ -2,10 +2,14 @@ public class Vertex {
     private String name;
     private boolean isVisited;
     private int distance;
+    public int asterisk;
+
 
     public Vertex(final String name) {
         this.name = name;
         isVisited = false;
+        distance = 0;
+        asterisk = 0;
     }
 
     public String getName() {

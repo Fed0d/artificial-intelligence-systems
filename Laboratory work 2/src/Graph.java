@@ -137,11 +137,7 @@ public class Graph {
 
         display_dfs(stack);
 
-        if (stack.size() != 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return stack.size() != 0;
     }
 
     public void iterative_dfs(int start, int end) {

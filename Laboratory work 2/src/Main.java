@@ -102,7 +102,7 @@ public class Main {
         graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"));
         System.out.println();
 
-        if (!graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"), 9)) {
+        if (!graph.dfs(graph.getVertexIdByName("Рига"), graph.getVertexIdByName("Одесса"), 6)) {
             System.out.print("Невозможно найти маршрут. ");
         }
 
